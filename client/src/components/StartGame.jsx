@@ -22,7 +22,7 @@ function StartGame() {
       default:
     }
   };
-  // 0x2fb00BF293D1b742ffcf61A4036b27A8ae242A77
+  // 0x979110FD5b035B74A3111CcD728f4E2115866935
   const handleCommit = async() => {
     try {
       if (commitment.address && commitment.move && commitment.bet > 0) {
