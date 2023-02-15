@@ -1,5 +1,5 @@
-const RPS = artifacts.require("RPS");
+const Hasher = artifacts.require("Hasher");
 
 module.exports = function (deployer) {
-  deployer.deploy(RPS);
+  deployer.deploy(Hasher);
 };

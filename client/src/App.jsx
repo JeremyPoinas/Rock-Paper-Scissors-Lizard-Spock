@@ -1,8 +1,10 @@
+import {
+  Routes, Route
+} from 'react-router-dom';
 import { EthProvider } from "./contexts/EthContext";
-import Intro from "./components/Intro/";
-import Setup from "./components/Setup";
-import Demo from "./components/Demo";
-import Footer from "./components/Footer";
+import Welcome from "./components/Welcome.jsx";
+import StartGame from "./components/StartGame.jsx";
+import OngoingGame from "./components/OngoingGame/index.jsx";
 import "./App.css";
 
 function App() {
@@ -10,13 +12,11 @@ function App() {
     <EthProvider>
       <div id="App" >
         <div className="container">
-          <Intro />
-          <hr />
-          <Setup />
-          <hr />
-          <Demo />
-          <hr />
-          <Footer />
+          <Welcome />
+          <Routes>
+              <Route path="/" element={<StartGame />} />
+              <Route path="/game/:rpsAddress" element={<OngoingGame />} />
+          </Routes>
         </div>
       </div>
     </EthProvider>

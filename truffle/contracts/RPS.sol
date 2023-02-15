@@ -18,7 +18,7 @@ contract RPS{
     bytes32 public c1Hash; // Commitment of j1.
     Move public c2; // Move of j2. Move.Null before he played.
     uint256 public stake; // Amout bet by each party.
-    uint256 public TIMEOUT = 5 minutes; // If some party takes more than TIMEOUT to respond, the other can call TIMEOUT to win.
+    uint256 public TIMEOUT = 2 minutes; // If some party takes more than TIMEOUT to respond, the other can call TIMEOUT to win.
     uint256 public lastAction; // The time of the last action. Usefull to determine if someone has timed out.
     
     /** @dev Constructor. Must send the amount at stake when creating the contract. Note that the move and salt must be saved.
@@ -81,8 +81,8 @@ contract RPS{
     /** @dev Let j1 take back the funds if j2 never play.
      */
     function j2Timeout() {
-        require(c2==Move.Null); // J2 has not played.
-        require(now > lastAction + TIMEOUT); // Timeout time has passed.
+        require(c2==Move.Null, 'move not null'); // J2 has not played.
+        require(now > lastAction + TIMEOUT, 'timeout'); // Timeout time has passed.
         j1.send(stake);
         stake=0;
     }
