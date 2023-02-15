@@ -10,6 +10,7 @@ function Player2({ gameInfo, rpsContract, getGameInfo }) {
     setMove(e.target.value);
   }
 
+  // Declare a timeout for player 1
   const handleTimeOut = async() => {
     try {
       await rpsContract.methods.j1Timeout().call({ from: accounts[0] });
@@ -20,7 +21,7 @@ function Player2({ gameInfo, rpsContract, getGameInfo }) {
     }
   };
 
-
+  // Commit player 2 move
   const handleCommit = async() => {
     try {
       await rpsContract.methods.play(move).call({ from: accounts[0], value: gameInfo.stake });
@@ -31,11 +32,9 @@ function Player2({ gameInfo, rpsContract, getGameInfo }) {
     }
   };
 
-  console.log(gameInfo);
-
   return (
     <div className="player1">
-      {gameInfo && gameInfo.stake === '0' && 
+      {gameInfo?.stake === '0' && 
         <>
           <h5>Game Over</h5>
           <NavLink to="/" >
@@ -43,7 +42,7 @@ function Player2({ gameInfo, rpsContract, getGameInfo }) {
           </NavLink>
         </>
       }
-      {gameInfo && gameInfo.stake !== '0' && gameInfo.player2Move !== '0' && 
+      {gameInfo?.stake !== '0' && gameInfo.player2Move !== '0' && 
         <>
           <h5>Waiting for Player 1 to solve the game ({gameInfo.player1})</h5>
 
@@ -52,7 +51,7 @@ function Player2({ gameInfo, rpsContract, getGameInfo }) {
           </button>
         </>
       }
-      {gameInfo && gameInfo.stake !== '0' && gameInfo.player2Move === '0' && 
+      {gameInfo?.stake !== '0' && gameInfo.player2Move === '0' && 
         <>
           <h5>Player 1 ({gameInfo.player1}) has created a game for {gameInfo.stake / 10**18} ETH, please make a move.</h5>
 

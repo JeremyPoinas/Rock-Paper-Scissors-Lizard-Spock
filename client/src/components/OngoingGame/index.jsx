@@ -10,12 +10,14 @@ function OngoingGame() {
 	const [rpsContract, setRpsContract] = useState();
 	const [gameInfo, setGameInfo] = useState();
 
+  // Get the RPS Contract that will be used for function calls from the address in the URL
   const getRpsContract = (rpsAddress) => {
     const { abi: rpcAbi } = artifacts.rpsArtifact;
     const newRpsContract = new web3.eth.Contract(rpcAbi, rpsAddress);
     setRpsContract(newRpsContract);
   }
   
+  // Get the game information in order to render the page dynamically
   const getGameInfo = async() => {
     try {
       const player1 = await rpsContract.methods.j1().call();

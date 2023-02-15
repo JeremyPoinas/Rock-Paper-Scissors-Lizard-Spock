@@ -15,6 +15,7 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
     setSalt(e.target.value);
   };
 
+  // Declare a timeout for player 2
   const handleTimeOut = async() => {
     try {
       await rpsContract.methods.j2Timeout().call({ from: accounts[0] });
@@ -25,7 +26,7 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
     }
   };
 
-
+  // Solve the game using the salt recorded if the page has not been refreshed, or the salt 
   const handleSolving = async() => {
     try {
       const saltInput = saltRecorded ? saltRecorded : salt;
@@ -38,11 +39,9 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
     }
   };
 
-  console.log(gameInfo);
-
   return (
     <div className="player1">
-      {gameInfo && gameInfo.stake === '0' && 
+      {gameInfo?.stake === '0' && 
         <>
           <h5>Game Over</h5>
           <NavLink to="/" >
@@ -50,7 +49,7 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
           </NavLink>
         </>
       }
-      {gameInfo && gameInfo.stake !== '0' && gameInfo.player2Move === '0' && 
+      {gameInfo?.stake !== '0' && gameInfo.player2Move === '0' && 
         <>
           <h5>Waiting for Player 2 ({gameInfo.player2})</h5>
 
@@ -61,7 +60,7 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
           </button>
         </>
       }
-      {gameInfo && gameInfo.stake !== '0' && gameInfo.player2Move !== '0' && 
+      {gameInfo?.stake !== '0' && gameInfo.player2Move !== '0' && 
         <>
           <h5>Player 2 has played, please solve the game to see the winner:</h5>
 
@@ -81,7 +80,7 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
           <div style={{marginTop: '20px'}}>
             <label htmlFor="salt">Add the salt: </label>
             <input
-              type="text" id="salt" name="salt" required value={salt}
+              type="text" id="salt" name="salt" required value={saltRecorded ? saltRecorded : salt}
               size="40" onChange={handleSaltChange}>
             </input>
           </div>
