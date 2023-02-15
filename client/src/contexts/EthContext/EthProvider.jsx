@@ -31,8 +31,8 @@ function EthProvider({ children }) {
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const rpsArtifact = require("/src/contracts/RPS.json");
-        const hasherArtifact = require("/src/contracts/Hasher.json");
+        const hasherArtifact = require("../../contracts/Hasher.json");
+        const rpsArtifact = require("../../contracts/RPS.json");
         const artifacts = {rpsArtifact, hasherArtifact};
         init(artifacts);
       } catch (err) {
