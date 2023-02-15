@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { actions } from "../contexts/EthContext/state";
 import useEth from "../contexts/EthContext/useEth";
@@ -7,6 +7,24 @@ function StartGame() {
   const navigate = useNavigate();
 	const { state: { artifacts, web3, hasherContract, accounts }, dispatch } = useEth();
 	const [commitment, setCommitment] = useState({address: '', move: '', bet: 0});
+
+  useEffect(() => {
+    /* To connect using MetaMask */
+    async function connect() {
+      if (window.ethereum) {
+      
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      window.web3 = new web3(window.ethereum);
+      
+      } else {
+      console.log("No wallet");
+      }
+    }
+
+    if (!accounts && web3) {
+      connect();
+    }
+  }, [])
 
   // Create controlled fields for the player's commitment
   const handleCommitmentChange = e => {
@@ -36,7 +54,7 @@ function StartGame() {
   // Then deploy a new RPS contract with the hash and the address of player 2
   const handleCommit = async() => {
     try {
-      if (commitment.address && commitment.address !== accounts[0] && commitment.move && commitment.bet > 0) {
+      if (commitment.address && commitment.address && commitment.move && commitment.bet > 0) {
         const saltRecorded = getRandomIntInclusive();
         const c1hash = await hasherContract.methods.hash(commitment.move, saltRecorded).call({ from: accounts[0] });
 
@@ -71,7 +89,7 @@ function StartGame() {
   return (
     <div className="player1">
       <h5>Select a player you want to challenge, a move and the amount of ETH you want to bet</h5>
-      
+
       <div style={{marginTop: '20px'}}>
         <label htmlFor="P2Address">Player 2 Address (ETH) : </label>
         <input
