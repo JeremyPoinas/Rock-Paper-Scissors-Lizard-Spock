@@ -9,6 +9,7 @@ const initialState = {
   networkID: null,
   contract: null,
   hasherContract: null,
+  saltRecorded: null,
 };
 
 const reducer = (state, action) => {

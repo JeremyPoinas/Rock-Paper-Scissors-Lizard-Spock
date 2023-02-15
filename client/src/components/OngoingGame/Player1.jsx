@@ -3,12 +3,17 @@ import { NavLink } from "react-router-dom";
 import useEth from "../../contexts/EthContext/useEth";
 
 function Player1({ gameInfo, rpsContract, getGameInfo }) {
-	const { state: {accounts} } = useEth();
+	const { state: {accounts, saltRecorded} } = useEth();
 	const [move, setMove] = useState(0);
+	const [salt, setSalt] = useState(0);
 
   const handleMoveChange = e => {
     setMove(e.target.value);
-  }
+  };
+
+  const handleSaltChange = e => {
+    setSalt(e.target.value);
+  };
 
   const handleTimeOut = async() => {
     try {
@@ -23,8 +28,10 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
 
   const handleSolving = async() => {
     try {
-      await rpsContract.methods.solve(move, 63).call({ from: accounts[0] });
-      await rpsContract.methods.solve(move, 63).send({ from: accounts[0] });
+      const saltInput = saltRecorded ? saltRecorded : salt;
+      
+      await rpsContract.methods.solve(move, saltInput).call({ from: accounts[0] });
+      await rpsContract.methods.solve(move, saltInput).send({ from: accounts[0] });
       getGameInfo();
     } catch (err) {
       alert(err);
@@ -43,9 +50,11 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
           </NavLink>
         </>
       }
-      {gameInfo && gameInfo.stake !== 0 && gameInfo.player2Move === '0' && 
+      {gameInfo && gameInfo.stake !== '0' && gameInfo.player2Move === '0' && 
         <>
           <h5>Waiting for Player 2 ({gameInfo.player2})</h5>
+
+          {saltRecorded && <p>Please save the salt: {saltRecorded}</p>}
 
           <button type="button" style={{marginTop: '10px'}} onClick={handleTimeOut}>
               Declare timeout and claim back your stack
@@ -68,6 +77,15 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
                 <option value="5">Spock</option>
             </select>
           </div>
+
+          <div style={{marginTop: '20px'}}>
+            <label htmlFor="salt">Add the salt: </label>
+            <input
+              type="text" id="salt" name="salt" required value={salt}
+              size="40" onChange={handleSaltChange}>
+            </input>
+          </div>
+
           <button type="button" style={{marginTop: '10px'}} onClick={handleSolving}>
               Solve the game
           </button>

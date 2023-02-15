@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import useEth from "../../contexts/EthContext/useEth";
 
 function Player2({ gameInfo, rpsContract, getGameInfo }) {
@@ -37,9 +38,12 @@ function Player2({ gameInfo, rpsContract, getGameInfo }) {
       {gameInfo && gameInfo.stake === '0' && 
         <>
           <h5>Game Over</h5>
+          <NavLink to="/" >
+            Start a new Game
+          </NavLink>
         </>
       }
-      {gameInfo && gameInfo.stake !== 0 && gameInfo.player2Move !== '0' && 
+      {gameInfo && gameInfo.stake !== '0' && gameInfo.player2Move !== '0' && 
         <>
           <h5>Waiting for Player 1 to solve the game ({gameInfo.player1})</h5>
 

@@ -23,10 +23,18 @@ function StartGame() {
     }
   };
   // 0x979110FD5b035B74A3111CcD728f4E2115866935
+
+  function getRandomIntInclusive() {
+    const min = Math.ceil(0);
+    const max = Math.floor(2**53 - 1);
+    return Math.floor(Math.random() * (max - min +1)) + min;
+  }
+
   const handleCommit = async() => {
     try {
-      if (commitment.address && commitment.move && commitment.bet > 0) {
-        const c1hash = await hasherContract.methods.hash(commitment.move, 63).call({ from: accounts[0] });
+      if (commitment.address && commitment.address !== accounts[0] && commitment.move && commitment.bet > 0) {
+        const saltRecorded = getRandomIntInclusive();
+        const c1hash = await hasherContract.methods.hash(commitment.move, saltRecorded).call({ from: accounts[0] });
 
         if (c1hash) {
           if (artifacts && web3) {
@@ -44,7 +52,7 @@ function StartGame() {
                   rpsContract._address = receipt.contractAddress;
                   navigate(`/game/${rpsContract._address}`);
               });
-            dispatch({ type: actions.init, data: {rpsContract} });
+            dispatch({ type: actions.init, data: {rpsContract, saltRecorded} });
           }
         }
       }

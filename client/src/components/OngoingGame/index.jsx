@@ -45,6 +45,14 @@ function OngoingGame() {
     }
   }, [rpsAddress, web3, artifacts])
 
+
+
+  useEffect(() => {
+    if (rpsContract) {
+      getGameInfo();
+    }
+  }, [rpsContract])
+
   return (
     <>
       {accounts && accounts[0] === gameInfo?.player1 && <Player1 rpsContract={rpsContract} gameInfo={gameInfo} getGameInfo={getGameInfo} />}
