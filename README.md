@@ -15,9 +15,9 @@ https://rock-paper-scissors-lizard-spock-dta480yw9-jeremypoinas.vercel.app/
  WARNING!  
  - YOU WILL NEED TO COPY THE URL AND SEND IT TO PLAYER 2 SO HE CAN PLAY WITH YOU  
  - YOU WILL NEED TO REMEMBER THE SALT AND YOUR MOVE. WE KEEP THE SALT IN STATE ONLY IF YOU STAY ON THE PAGE  
- 7. Here you can decide to declare a timeout for player 2 if he doesn't play after 2mn has passed since the creation of the game
- 8. Once player 2 has played, you can solve the game by revealing the move you played and the salt (only written if you stayed in the page)
- 9. Funds are sent to the winner
+ 4. Here you can decide to declare a timeout for player 2 if he doesn't play after 2mn has passed since the creation of the game
+ 5. Once player 2 has played, you can solve the game by revealing the move you played and the salt (only written if you stayed in the page)
+ 6. Funds are sent to the winner
 
 **Player 2**
 
