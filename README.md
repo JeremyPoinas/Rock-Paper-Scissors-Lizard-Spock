@@ -11,13 +11,13 @@ https://rock-paper-scissors-lizard-spock-dta480yw9-jeremypoinas.vercel.app/
 
  1. Enter the ETH address of the player you want to challenge, the move you want to play, and the amount to bet that will be staked
  2. Commit your move
- 3. You get redirected to a new page for your newly created game
- WARNING! 
- 4. YOU WILL NEED TO COPY THE URL AND SEND IT TO PLAYER 2 SO HE CAN PLAY WITH YOU
- 5. YOU WILL NEED TO REMEMBER THE SALT AND YOUR MOVE. WE KEEP THE SALT IN STATE ONLY IF YOU STAY ON THE PAGE
- 6. Here you can decide to declare a timeout for player 2 if he doesn't play after 2mn has passed since the creation of the game
- 7. Once player 2 has played, you can solve the game by revealing the move you played and the salt (only written if you stayed in the page)
- 8. Funds are sent to the winner
+ 3. You get redirected to a new page for your newly created game   
+ WARNING!  
+ - YOU WILL NEED TO COPY THE URL AND SEND IT TO PLAYER 2 SO HE CAN PLAY WITH YOU  
+ - YOU WILL NEED TO REMEMBER THE SALT AND YOUR MOVE. WE KEEP THE SALT IN STATE ONLY IF YOU STAY ON THE PAGE  
+ 7. Here you can decide to declare a timeout for player 2 if he doesn't play after 2mn has passed since the creation of the game
+ 8. Once player 2 has played, you can solve the game by revealing the move you played and the salt (only written if you stayed in the page)
+ 9. Funds are sent to the winner
 
 **Player 2**
 
