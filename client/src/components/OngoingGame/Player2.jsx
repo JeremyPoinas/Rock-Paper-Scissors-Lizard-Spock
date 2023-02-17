@@ -1,25 +1,18 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import CountdownTimer from './CountdownTimer';
 import useEth from "../../contexts/EthContext/useEth";
 
 function Player2({ gameInfo, rpsContract, getGameInfo }) {
 	const { state: {accounts} } = useEth();
-	const [move, setMove] = useState(0);
+	const [move, setMove] = useState(null);
+  
+  // To be used by the countdown timer
+  const targetDate = (+gameInfo.lastAction + +gameInfo.timeOut) * 1000;
 
   const handleMoveChange = e => {
     setMove(e.target.value);
   }
-
-  // Declare a timeout for player 1
-  const handleTimeOut = async() => {
-    try {
-      await rpsContract.methods.j1Timeout().call({ from: accounts[0] });
-      await rpsContract.methods.j1Timeout().send({ from: accounts[0] });
-      getGameInfo();
-    } catch (err) {
-      alert(err);
-    }
-  };
 
   // Commit player 2 move
   const handleCommit = async() => {
@@ -33,7 +26,7 @@ function Player2({ gameInfo, rpsContract, getGameInfo }) {
   };
 
   return (
-    <div className="player1">
+    <div className="player2">
       {gameInfo?.stake === '0' && 
         <>
           <h5>Game Over</h5>
@@ -46,9 +39,7 @@ function Player2({ gameInfo, rpsContract, getGameInfo }) {
         <>
           <h5>Waiting for Player 1 to solve the game ({gameInfo.player1})</h5>
 
-          <button type="button" style={{marginTop: '10px'}} onClick={handleTimeOut}>
-              Declare timeout and claim back your stack
-          </button>
+          <CountdownTimer targetDate={targetDate} rpsContract={rpsContract} getGameInfo={getGameInfo} gameInfo={gameInfo} />
         </>
       }
       {gameInfo?.stake !== '0' && gameInfo.player2Move === '0' && 
@@ -67,9 +58,12 @@ function Player2({ gameInfo, rpsContract, getGameInfo }) {
                 <option value="5">Spock</option>
             </select>
           </div>
-          <button type="button" style={{marginTop: '10px'}} onClick={handleCommit}>
-              Commit
-          </button>
+          { move && 
+
+            <button type="button" style={{marginTop: '10px'}} onClick={handleCommit}>
+                Commit
+            </button>
+          }
         </>
       }
     </div>

@@ -6,7 +6,7 @@ import useEth from "../contexts/EthContext/useEth";
 function StartGame() {
   const navigate = useNavigate();
 	const { state: { artifacts, web3, hasherContract, accounts }, dispatch } = useEth();
-	const [commitment, setCommitment] = useState({address: '', move: '', bet: 0});
+	const [commitment, setCommitment] = useState({address: '', move: null, bet: 0});
 
   useEffect(() => {
     /* To connect using MetaMask */
@@ -41,13 +41,12 @@ function StartGame() {
       default:
     }
   };
-  // 0x50bE6E08f0ec4451B3C1Bb034BcAB1ECF0fA4023
 
   // Hash the player's move with the salt using the Hasher contract
   // Then deploy a new RPS contract with the hash and the address of player 2
   const handleCommit = async() => {
     try {
-      if (commitment.address && commitment.address && commitment.move && commitment.bet > 0) {
+      if (commitment.address && commitment.move && commitment.bet > 0) {
         const saltRecorded = web3.utils.randomHex(32);
         const c1hash = await hasherContract.methods.hash(commitment.move, saltRecorded).call({ from: accounts[0] });
 
@@ -111,9 +110,12 @@ function StartGame() {
         </input>
       </div>
 
-      <button type="button" style={{marginTop: '10px'}} onClick={handleCommit}>
-          Commit
-      </button>
+      {
+        commitment.address && commitment.move && commitment.bet > 0 &&
+        <button type="button" style={{marginTop: '10px'}} onClick={handleCommit}>
+            Commit
+        </button>
+      }
 
     </div>
   );
