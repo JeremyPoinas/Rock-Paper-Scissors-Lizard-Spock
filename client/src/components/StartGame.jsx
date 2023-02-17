@@ -41,21 +41,14 @@ function StartGame() {
       default:
     }
   };
-  // 0x979110FD5b035B74A3111CcD728f4E2115866935
-
-  // Create a random number that will be used as salt
-  function getRandomIntInclusive() {
-    const min = Math.ceil(0);
-    const max = Math.floor(2**53 - 1);
-    return Math.floor(Math.random() * (max - min +1)) + min;
-  }
+  // 0x50bE6E08f0ec4451B3C1Bb034BcAB1ECF0fA4023
 
   // Hash the player's move with the salt using the Hasher contract
   // Then deploy a new RPS contract with the hash and the address of player 2
   const handleCommit = async() => {
     try {
       if (commitment.address && commitment.address && commitment.move && commitment.bet > 0) {
-        const saltRecorded = getRandomIntInclusive();
+        const saltRecorded = web3.utils.randomHex(32);
         const c1hash = await hasherContract.methods.hash(commitment.move, saltRecorded).call({ from: accounts[0] });
 
         if (c1hash) {
