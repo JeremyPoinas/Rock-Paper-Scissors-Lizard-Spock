@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import CountdownTimer from './CountdownTimer';
 import useEth from "../../contexts/EthContext/useEth";
 
 function Player1({ gameInfo, rpsContract, getGameInfo }) {
 	const { state: {accounts, saltRecorded} } = useEth();
-	const [move, setMove] = useState(0);
-	const [salt, setSalt] = useState(0);
+	const [move, setMove] = useState();
+	const [salt, setSalt] = useState();
+  
+  // To be used by the countdown timer
+  const targetDate = (+gameInfo.lastAction + +gameInfo.timeOut) * 1000;
 
   const handleMoveChange = e => {
     setMove(e.target.value);
@@ -13,17 +17,6 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
 
   const handleSaltChange = e => {
     setSalt(e.target.value);
-  };
-
-  // Declare a timeout for player 2
-  const handleTimeOut = async() => {
-    try {
-      await rpsContract.methods.j2Timeout().call({ from: accounts[0] });
-      await rpsContract.methods.j2Timeout().send({ from: accounts[0] });
-      getGameInfo();
-    } catch (err) {
-      alert(err);
-    }
   };
 
   // Solve the game using the salt recorded if the page has not been refreshed, or the salt 
@@ -55,9 +48,7 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
 
           {saltRecorded && <p>Please save the salt: {saltRecorded}</p>}
 
-          <button type="button" style={{marginTop: '10px'}} onClick={handleTimeOut}>
-              Declare timeout and claim back your stack
-          </button>
+          <CountdownTimer targetDate={targetDate} rpsContract={rpsContract} getGameInfo={getGameInfo} gameInfo={gameInfo} />
         </>
       }
       {gameInfo?.stake !== '0' && gameInfo.player2Move !== '0' && 
@@ -85,9 +76,11 @@ function Player1({ gameInfo, rpsContract, getGameInfo }) {
             </input>
           </div>
 
-          <button type="button" style={{marginTop: '10px'}} onClick={handleSolving}>
+          { move && (saltRecorded || salt) &&
+            <button type="button" style={{marginTop: '10px'}} onClick={handleSolving}>
               Solve the game
-          </button>
+            </button>
+          }
         </>
       }
     </div>
